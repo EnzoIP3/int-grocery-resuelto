@@ -1,5 +1,5 @@
 import { Grocery } from "./domain/grocery";
-import Categories, { type Category } from "./domain/product";
+import Categories, { type Category, type Product } from "./domain/product";
 
 const grocery = new Grocery("Almacén de Frutas y Verduras");
 const byId = <T extends HTMLElement>(id: string): T => {
@@ -12,6 +12,7 @@ const byId = <T extends HTMLElement>(id: string): T => {
 
 const nameInput = byId<HTMLInputElement>("inp-name");
 const priceInput = byId<HTMLInputElement>("inp-price");
+const discountInput = byId<HTMLInputElement>("inp-discount");
 const categoryInput = byId<HTMLSelectElement>("sel-category");
 const errorContainer = byId<HTMLDivElement>("add-error-container");
 const errorMessage = byId<HTMLParagraphElement>("add-error-msg");
@@ -19,8 +20,40 @@ const errorMessage = byId<HTMLParagraphElement>("add-error-msg");
 byId<HTMLHeadingElement>("grocery-name").textContent = grocery.getName();
 
 function updateTotals(): void {
-  byId<HTMLInputElement>("inp-total-products").value =
-    grocery.totalProducts().toString();
+  byId<HTMLInputElement>("inp-total-products").value = grocery
+    .totalProducts()
+    .toString();
+  byId<HTMLInputElement>("inp-total-discounted-products").value = grocery
+    .totalDiscountedProducts()
+    .toString();
+}
+
+function createProductCard(product: Product): HTMLDivElement {
+  const column = document.createElement("div");
+  column.className = "col";
+
+  const card = document.createElement("div");
+  card.className = "card h-100 shadow border border-secondary";
+
+  const body = document.createElement("div");
+  body.className = "card-body";
+
+  const title = document.createElement("h5");
+  title.className = "card-title";
+  title.textContent = product.getName();
+
+  const price = document.createElement("p");
+  price.className = "card-text mb-1";
+  price.textContent = `Precio: $${product.getPrice()}`;
+
+  const discount = document.createElement("p");
+  discount.className = "card-text";
+  discount.textContent = `Descuento: ${product.getDiscount()}%`;
+
+  body.append(title, price, discount);
+  card.appendChild(body);
+  column.appendChild(card);
+  return column;
 }
 
 function updateCatalog(): void {
@@ -30,29 +63,29 @@ function updateCatalog(): void {
   vegetablesList.replaceChildren();
 
   grocery.getProducts().forEach((product) => {
-    const productText = document.createElement("p");
-    productText.textContent = `${product.getName()  } - $${  product.getPrice()  }`;
-    const target = product.getCategory() === Categories.Fruits
-      ? fruitsList
-      : vegetablesList;
-    target.appendChild(productText);
+    const target =
+      product.getCategory() === Categories.Fruits ? fruitsList : vegetablesList;
+    target.appendChild(createProductCard(product));
   });
 
   byId("empty-fruits-list").classList.toggle(
     "d-none",
-    grocery.getProducts().some((product) => product.getCategory() === Categories.Fruits),
+    grocery
+      .getProducts()
+      .some((product) => product.getCategory() === Categories.Fruits),
   );
   byId("empty-vegetables-list").classList.toggle(
     "d-none",
-    grocery.getProducts().some(
-      (product) => product.getCategory() === Categories.Vegetables,
-    ),
+    grocery
+      .getProducts()
+      .some((product) => product.getCategory() === Categories.Vegetables),
   );
 }
 
 function clearInputs(): void {
   nameInput.value = "";
   priceInput.value = "";
+  discountInput.value = "0";
 }
 
 byId<HTMLButtonElement>("btn-add").addEventListener("click", () => {
@@ -61,6 +94,7 @@ byId<HTMLButtonElement>("btn-add").addEventListener("click", () => {
       nameInput.value,
       Number(priceInput.value),
       categoryInput.value as Category,
+      Number(discountInput.value),
     );
     errorContainer.classList.add("d-none");
     clearInputs();

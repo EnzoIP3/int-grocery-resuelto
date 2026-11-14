@@ -88,6 +88,10 @@
             >Total de productos:
             <input id="inp-total-products" type="number" readonly />
           </label>
+          <label for="inp-total-discounted-products"
+            >Total productos con descuento:
+            <input id="inp-total-discounted-products" type="number" readonly />
+          </label>
         </div>
         <div
           class="tab-pane m-3"
@@ -132,6 +136,17 @@
                 class="form-control"
                 id="inp-price"
                 required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="inp-discount" class="form-label">Descuento</label>
+              <input
+                type="number"
+                class="form-control"
+                id="inp-discount"
+                min="0"
+                max="100"
+                value="0"
               />
             </div>
             <select class="form-select mb-3" id="sel-category">
