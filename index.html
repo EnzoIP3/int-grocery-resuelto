@@ -98,7 +98,7 @@
           id="fruits"
           role="tabpanel"
           aria-labelledby="fruits-tab"
-          tabindex="1"
+          tabindex="0"
         >
           <p id="empty-fruits-list" class="fs-4">No hay frutas ingresadas</p>
           <div id="fruits-list" class="row row-cols-1 row-cols-md-2 g-3">
@@ -109,7 +109,7 @@
           id="vegetables"
           role="tabpanel"
           aria-labelledby="vegetables-tab"
-          tabindex="2"
+          tabindex="0"
         >
           <p id="empty-vegetables-list" class="fs-4">
             No hay verduras ingresadas
@@ -122,15 +122,15 @@
           id="new-product"
           role="tabpanel"
           aria-labelledby="new-product-tab"
-          tabindex="3"
+          tabindex="0"
         >
           <form>
             <div class="mb-3">
-              <label for="product-name" class="form-label">Nombre</label>
+              <label for="inp-name" class="form-label">Nombre</label>
               <input type="text" class="form-control" id="inp-name" required />
             </div>
             <div class="mb-3">
-              <label for="product-price" class="form-label">Precio</label>
+              <label for="inp-price" class="form-label">Precio</label>
               <input
                 type="number"
                 class="form-control"
@@ -149,6 +149,7 @@
                 value="0"
               />
             </div>
+            <label for="sel-category" class="form-label">Categoría</label>
             <select class="form-select mb-3" id="sel-category">
               <option value="Frutas">Frutas</option>
               <option value="Verduras">Verduras</option>
