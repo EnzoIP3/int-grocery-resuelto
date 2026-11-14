@@ -10,14 +10,17 @@ export class Product {
   #name!: string;
   #price!: number;
   #category!: Category;
+  #discount!: number;
   constructor(
     name: string,
     price: number,
     category: Category,
+    discount: number = 0,
   ) {
     this.setName(name);
     this.setPrice(price);
     this.setCategory(category);
+    this.setDiscount(discount);
   }
 
   getName(): string {
@@ -32,7 +35,14 @@ export class Product {
     return this.#category;
   }
 
+  getDiscount(): number {
+    return this.#discount;
+  }
+
   toString(): string {
+    if (this.#discount > 0) {
+      return `${this.#name} (${this.#discount}% de descuento)`;
+    }
     return `${this.#name}`;
   }
 
@@ -55,5 +65,12 @@ export class Product {
       throw new Error("La categoría del producto no es válida");
     }
     this.#category = category;
+  }
+
+  setDiscount(discount: number): void {
+    if (!Number.isInteger(discount) || discount < 0 || discount > 100) {
+      throw new Error("El descuento debe ser un número entero entre 0 y 100");
+    }
+    this.#discount = discount;
   }
 }

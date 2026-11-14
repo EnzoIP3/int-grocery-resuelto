@@ -23,8 +23,9 @@ export class Grocery {
     name: string,
     price: number,
     category: Category,
+    discount: number = 0,
   ): void {
-    this.#products.push(new Product(name, price, category));
+    this.#products.push(new Product(name, price, category, discount));
   }
 
   getProducts(): Product[] {
@@ -36,7 +37,6 @@ export class Grocery {
   }
 
   totalDiscountedProducts(): number {
-    // TODO: Implementar cuando Product tenga descuento
-    return 0;
+    return this.#products.filter((product) => product.getDiscount() > 0).length;
   }
 }
